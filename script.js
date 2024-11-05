@@ -1,23 +1,36 @@
 document.addEventListener("DOMContentLoaded", function() {
     const commandLine = document.getElementById("command-line");
     const output = document.getElementById("output");
-    let board; 
-    let currentPlayer; 
-    const players = ["X", "O"]; 
+    let board;
+    let currentPlayer;
+    const players = ["X", "O"];
+    let isGameActive = false; // Флаг состояния игры
 
     function printOutput(text) {
         const paragraph = document.createElement("p");
-        paragraph.classList.add("fade-in"); 
+        paragraph.classList.add("fade-in");
         paragraph.innerHTML = text;
         output.appendChild(paragraph);
-        output.scrollTop = output.scrollHeight; 
+        output.scrollTop = output.scrollHeight;
     }
 
     commandLine.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
             const command = commandLine.value.trim();
             commandLine.value = "";
-            handleCommand(command);
+
+            if (command.toLowerCase().startsWith("move ")) {
+                const move = command.substring(5).split(",");
+                if (move.length === 2) {
+                    const row = parseInt(move[0], 10) - 1;
+                    const col = parseInt(move[1], 10) - 1;
+                    handleMove(row, col);
+                } else {
+                    printOutput("Invalid move format! Please use 'move row,column' (e.g., move 1,1).");
+                }
+            } else {
+                handleCommand(command);
+            }
         }
     });
 
@@ -50,7 +63,8 @@ document.addEventListener("DOMContentLoaded", function() {
             ["", "", ""],
             ["", "", ""]
         ];
-        currentPlayer = players[0]; // Начинает игрок X
+        currentPlayer = players[0];
+        isGameActive = true; // Активируем игру
         printOutput("Tic Tac Toe started! Player X goes first. Enter your move in the format row,column (e.g., 1,1 for the top-left corner).");
         printBoard();
     }
@@ -61,6 +75,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function handleMove(row, col) {
+        if (!isGameActive) {
+            printOutput("The game is not active. Type <span class='command'>tictactoe</span> to start a new game.");
+            return;
+        }
+
         if (row < 0 || row > 2 || col < 0 || col > 2) {
             printOutput("Invalid move! Please enter row and column between 1 and 3.");
             return;
@@ -75,16 +94,18 @@ document.addEventListener("DOMContentLoaded", function() {
         if (checkWinner()) {
             printBoard();
             printOutput(`Player ${currentPlayer} wins! Type <span class='command'>tictactoe</span> to play again.`);
+            isGameActive = false; // Завершаем игру
             return;
         }
 
         if (board.flat().every(cell => cell !== "")) {
             printBoard();
             printOutput("It's a draw! Type <span class='command'>tictactoe</span> to play again.");
+            isGameActive = false; // Завершаем игру
             return;
         }
 
-        currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; // Переключаем игроков
+        currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
         printBoard();
         printOutput(`Player ${currentPlayer}'s turn.`);
     }
@@ -98,18 +119,4 @@ document.addEventListener("DOMContentLoaded", function() {
         if (board[0][2] && board[0][2] === board[1][1] && board[1][1] === board[2][0]) return true;
         return false;
     }
-
-    commandLine.addEventListener("keydown", function(event) {
-        if (event.key === "Enter" && commandLine.value.trim().toLowerCase().startsWith("move ")) {
-            const move = commandLine.value.trim().substring(5).split(",");
-            if (move.length === 2) {
-                const row = parseInt(move[0], 10) - 1; 
-                const col = parseInt(move[1], 10) - 1; 
-                handleMove(row, col);
-            } else {
-                printOutput("Invalid move format! Please use 'move row,column' (e.g., move 1,1).");
-            }
-        }
-    });
 });
-
