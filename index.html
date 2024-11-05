@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Terminal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="screen">
+        <img src="images/scanlines.png" alt="scan" class="overlay scan">
+        <img src="images/screen.png" alt="screen" class="overlay screen">
+
+        <div id="content">
+            <div id="output">
+                <h1>Welcome to My Terminal...</h1>
+                <p>Type <span class="command">help</span> for a list of commands.</p>
+            </div>
+        </div>
+
+        <input type="text" id="command-line" placeholder="> Type a command" autofocus>
+    </div>
+
+    <audio id="startup-sound" src="sounds/startup.mp3" autoplay></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
