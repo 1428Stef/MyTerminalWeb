@@ -17,7 +17,7 @@ body {
     background-color: blue;
     margin: 60px auto;
     overflow: hidden;
-    border-radius: 10px; 
+    border-radius: 10px;
 }
 
 .overlay {
@@ -40,7 +40,7 @@ body {
     position: relative;
     padding: 50px;
     z-index: 2;
-    overflow-y: auto; 
+    overflow-y: auto;
     height: calc(100% - 100px);
 }
 
@@ -56,6 +56,9 @@ body {
 }
 
 #command-line {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
     width: calc(100% - 20px);
     padding: 10px;
     font-size: 18px;
@@ -63,9 +66,7 @@ body {
     color: white;
     border: 1px solid cyan;
     outline: none;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
+    z-index: 3;
 }
 
 .fade-in {
